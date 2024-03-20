@@ -1,0 +1,81 @@
+mysql> CREATE TABLE Orders (
+    ->     OrderID int NOT NULL,
+    ->     OrderNumber int NOT NULL,
+    ->     PersonID int,
+    ->     PRIMARY KEY (OrderID),
+    ->     FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from orders;
+Empty set (0.00 sec)
+
+mysql> desc orders;
++-------------+------+------+-----+---------+-------+
+| Field       | Type | Null | Key | Default | Extra |
++-------------+------+------+-----+---------+-------+
+| OrderID     | int  | NO   | PRI | NULL    |       |
+| OrderNumber | int  | NO   |     | NULL    |       |
+| PersonID    | int  | YES  | MUL | NULL    |       |
++-------------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into order(OrderID,OrderNumber,PersonID)values(23,765,176),(1904,1765,1876);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order(OrderID,OrderNumber,PersonID)values(23,765,176),(1904,1765,1876)' at line 1
+mysql> insert into orders(OrderID,OrderNumber,PersonID)values(23,765,176),(1904,1765,1876);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (sys.orders, CONSTRAINT orders_ibfk_1 FOREIGN KEY (PersonID) REFERENCES persons (personid))mysql> insert into orders(OrderID,OrderNumber,PersonID)values(23,765,176),(1904,18);
+ERROR 1136 (21S01): Column count doesn't match value count at row 2
+mysql> insert into orders(OrderID,OrderNumber,PersonID)values(23,765,176),(1904,1765,1876);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (sys.orders, CONSTRAINT orders_ibfk_1 FOREIGN KEY (PersonID) REFERENCES persons (personid))mysql> insert into orders(OrderID,OrderNumber,PersonID)values(123,356,1904);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from orders;
++---------+-------------+----------+
+| OrderID | OrderNumber | PersonID |
++---------+-------------+----------+
+|     123 |         356 |     1904 |
++---------+-------------+----------+
+1 row in set (0.00 sec)
+
+mysql> insert into orders(OrderID,OrderNumber,PersonID)values(23,765,1906);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from orders;
++---------+-------------+----------+
+| OrderID | OrderNumber | PersonID |
++---------+-------------+----------+
+|      23 |         765 |     1906 |
+|     123 |         356 |     1904 |
++---------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from orders where PersonID=1904;
++---------+-------------+----------+
+| OrderID | OrderNumber | PersonID |
++---------+-------------+----------+
+|     123 |         356 |     1904 |
++---------+-------------+----------+
+1 row in set (0.00 sec)
+
+mysql> select * from orders where PersonID=1906;
++---------+-------------+----------+
+| OrderID | OrderNumber | PersonID |
++---------+-------------+----------+
+|      23 |         765 |     1906 |
++---------+-------------+----------+
+1 row in set (0.00 sec)
+
+mysql> select age from orders where PersonID=1906;
+ERROR 1054 (42S22): Unknown column 'age' in 'field list'
+mysql> select * from persons where PersonID=1906;
++----------+-----+
+| personid | age |
++----------+-----+
+|     1906 |  18 |
++----------+-----+
+1 row in set (0.00 sec)
+
+mysql> select age from orders where PersonID=1906;
+ERROR 1054 (42S22): Unknown column 'age' in 'field list'
+mysql> ^C
+mysql>

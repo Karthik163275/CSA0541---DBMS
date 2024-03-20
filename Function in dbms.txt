@@ -1,0 +1,34 @@
+mysql-> use sys;
+database changes
+delimiter $$
+mysql>  create function func_cube
+    -> (
+    -> num int
+    -> )
+    -> returns int
+    -> deterministic
+    -> beginuse sys;
+
+    -> declare totalcube int;
+    -> set totalcube = num*num*num;
+    -> return totalcube;
+    -> end$$
+Query OK, 0 rows affected (0.79 sec)
+
+mysql> delimiter;
+    -> delimiter $$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'delimiter;delimiter' at line 1
+mysql> delimiter $$
+mysql> select func_cube;
+    -> delimiter $$
+ERROR 1054 (42S22): Unknown column 'func_cube' in 'field list'
+mysql> delimiter $$
+mysql> select func_cube(4);
+    -> end$$
++--------------+
+| func_cube(4) |
++--------------+
+|           64 |
++--------------+
+1 row in set (0.09 sec)                                                                                                                                                                                                                             use sys;
+usess

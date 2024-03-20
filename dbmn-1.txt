@@ -1,0 +1,191 @@
+mysql> use sys;
+Database changed
+mysql> create table student;
+
+mysql> create database students;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create table student(regno int(6),name char(16),address char(20));
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| course             |
+| courses            |
+| department         |
+| faculty            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| student            |
+| students           |
+| sys                |
+| world              |
++--------------------+
+12 rows in set (0.00 sec)
+
+mysql> desc student;
++---------+----------+------+-----+---------+-------+
+| Field   | Type     | Null | Key | Default | Extra |
++---------+----------+------+-----+---------+-------+
+| regno   | int      | YES  |     | NULL    |       |
+| name    | char(16) | YES  |     | NULL    |       |
+| address | char(20) | YES  |     | NULL    |       |
++---------+----------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table student add(phnno int(10));
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> select * from student;
+Empty set (0.00 sec)
+
+mysql> insert into student(regno,name,address)values(23,'vamsi','chennai'),(34,'vinay','hyd');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+-------+---------+-------+
+| regno | name  | address | phnno |
++-------+-------+---------+-------+
+|    23 | vamsi | chennai |  NULL |
+|    34 | vinay | hyd     |  NULL |
++-------+-------+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table student add(phnno int(10));
+ERROR 1060 (42S21): Duplicate column name 'phnno'
+mysql> alter table student add(phnno);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> alter table student add(city char(9));
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+-------+---------+-------+------+
+| regno | name  | address | phnno | city |
++-------+-------+---------+-------+------+
+|    23 | vamsi | chennai |  NULL | NULL |
+|    34 | vinay | hyd     |  NULL | NULL |
++-------+-------+---------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> alter table student modify(phnno int(12));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(phnno int(12))' at line 1
+mysql> alter table student modify phnno int(12);
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> select * from student;
++-------+-------+---------+-------+------+
+| regno | name  | address | phnno | city |
++-------+-------+---------+-------+------+
+|    23 | vamsi | chennai |  NULL | NULL |
+|    34 | vinay | hyd     |  NULL | NULL |
++-------+-------+---------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> update student set phnno=91002 where regno=2;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select * from student;
++-------+-------+---------+-------+------+
+| regno | name  | address | phnno | city |
++-------+-------+---------+-------+------+
+|    23 | vamsi | chennai |  NULL | NULL |
+|    34 | vinay | hyd     |  NULL | NULL |
++-------+-------+---------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> update student set phnno=91002 where regno=34;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-------+-------+---------+-------+------+
+| regno | name  | address | phnno | city |
++-------+-------+---------+-------+------+
+|    23 | vamsi | chennai |  NULL | NULL |
+|    34 | vinay | hyd     | 91002 | NULL |
++-------+-------+---------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> update student set phnno=65273 where regno=23;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-------+-------+---------+-------+------+
+| regno | name  | address | phnno | city |
++-------+-------+---------+-------+------+
+|    23 | vamsi | chennai | 65273 | NULL |
+|    34 | vinay | hyd     | 91002 | NULL |
++-------+-------+---------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql>  alter table student rename column phnno to phonenumber;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+-------+---------+-------------+------+
+| regno | name  | address | phonenumber | city |
++-------+-------+---------+-------------+------+
+|    23 | vamsi | chennai |       65273 | NULL |
+|    34 | vinay | hyd     |       91002 | NULL |
++-------+-------+---------+-------------+------+
+2 rows in set (0.00 sec)
+
+mysql> delete from student city where regno=23;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++-------+-------+---------+-------------+------+
+| regno | name  | address | phonenumber | city |
++-------+-------+---------+-------------+------+
+|    34 | vinay | hyd     |       91002 | NULL |
++-------+-------+---------+-------------+------+
+1 row in set (0.00 sec)
+
+mysql>  alter table student rename coloum phonenumber to phonno;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'phonenumber to phonno' at line 1
+mysql>  alter table student rename phonenumber to phonno;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to phonno' at line 1
+mysql>  alter table student rename column phonenumber to phonno;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+-------+---------+--------+------+
+| regno | name  | address | phonno | city |
++-------+-------+---------+--------+------+
+|    34 | vinay | hyd     |  91002 | NULL |
++-------+-------+---------+--------+------+
+1 row in set (0.00 sec)
+
+mysql> truncate table student;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from student;
+Empty set (0.00 sec)
+
+mysql> desc student;
++---------+----------+------+-----+---------+-------+
+| Field   | Type     | Null | Key | Default | Extra |
++---------+----------+------+-----+---------+-------+
+| regno   | int      | YES  |     | NULL    |       |
+| name    | char(16) | YES  |     | NULL    |       |
+| address | char(20) | YES  |     | NULL    |       |
+| phonno  | int      | YES  |     | NULL    |       |
+| city    | char(9)  | YES  |     | NULL    |       |
++---------+----------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.03 sec)
+
